@@ -6,14 +6,20 @@ import { Image, Pressable, StyleSheet, TextInput } from 'react-native'
 import { router } from 'expo-router'
 
 export default function SignIn() {
-    const { signIn } = useAuth()
     const [secureEntery, setSecureEntery] = useState(true)
-    console.log(signIn)
 
     return (
         <View style={styles.container}>
             <Image style={styles.logo} source={require('@/assets/images/core/logo.png')} />
-            <Text style={styles.title}>Welcome</Text>
+            <Text style={styles.title}>Create your account</Text>
+            <View style={styles.inputContainer}>
+                <TextInput
+                    style={styles.textInput}
+                    placeholder="Name"
+                    placeholderTextColor='white'
+                    keyboardType="default"
+                />
+            </View>
             <View style={styles.inputContainer}>
                 <TextInput
                     style={styles.textInput}
@@ -37,13 +43,13 @@ export default function SignIn() {
                     <SimpleLineIcons name={"eye"} size={20} color='white' />
                 </Pressable>
             </View>
-            <Pressable style={styles.loginButtonWrapper} onPress={signIn}>
-                <Text style={styles.loginText}>Sign In</Text>
+            <Pressable style={styles.loginButtonWrapper} onPress={() => router.push('/signIn')}>
+                <Text style={styles.loginText}>Sign Up</Text>
             </Pressable>
             <View style={styles.footerContainer}>
-                <Text style={styles.accountText}>Don’t have an account?</Text>
-                <Pressable onPress={()=> router.navigate('/signUp')}>
-                    <Text style={styles.signupText}>Sign up</Text>
+                <Text style={styles.accountText}>have an account?</Text>
+                <Pressable onPress={() => router.navigate('/signIn')}>
+                    <Text style={styles.signupText}>Sign In</Text>
                 </Pressable>
             </View>
         </View>
