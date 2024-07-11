@@ -75,7 +75,7 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: useClientOnlyValue(false, true),
+        headerShown: useClientOnlyValue(false, false),
         tabBarStyle: {
           backgroundColor: 'black',
           borderTopWidth: 0,
