@@ -1,7 +1,7 @@
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Text, Pressable, TextInput } from "react-native";
+import { View, Text, Pressable, TextInput, Alert } from "react-native";
 import { useState } from "react";
 
 export default function Register() {
@@ -9,29 +9,32 @@ export default function Register() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     const apiUrl = process.env.EXPO_PUBLIC_API_URL || ""
-
+    const router = useRouter()
     const requestBody = {
       name: name,
       username: username,
       password: password
-    };
+    }
 
-    fetch(apiUrl + "/auth/register", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(requestBody),
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Response:', data)
-      })
-      .catch(error => {
-        console.error('Error:', error)
+    try {
+      const response = await fetch(apiUrl + "/auth/register", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
       });
+
+      if (!response.ok) {
+        throw new Error('Registrasi gagal. Silakan coba lagi.')
+      }
+      router.replace('/login')
+    } catch (error) {
+      console.error('Error:', error);
+      Alert.alert('Error', 'Terjadi kesalahan saat registrasi. Silakan coba lagi.')
+    }
   };
   return (
     <SafeAreaView

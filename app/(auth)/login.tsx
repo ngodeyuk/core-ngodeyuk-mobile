@@ -2,7 +2,7 @@ import { Link } from "expo-router";
 import { useAuth } from "../../context/AuthProvider";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Text, Pressable, TextInput } from "react-native";
+import { View, Text, Pressable, TextInput, Alert } from "react-native";
 import { useState } from "react";
 
 export default function Login() {
@@ -12,23 +12,28 @@ export default function Login() {
 
   const login = async () => {
     const apiUrl = process.env.EXPO_PUBLIC_API_URL || ""
+    const requestBody = {
+      username,
+      password,
+    }
     try {
       const response = await fetch(apiUrl + "/auth/login", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify(requestBody),
       });
 
       if (!response.ok) {
-        throw new Error('Login failed');
+        throw new Error('Login gagal, Silahkan coba kembali.');
       }
       const data = await response.json();
       const token = data.token;
       setUser(token);
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('Error:', error);
+      Alert.alert('Error', 'Terjadi kesalahan saat login. Silakan coba lagi.')
     }
   }; return (
     <SafeAreaView
